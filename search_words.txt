@@ -1,0 +1,8 @@
+Comment : Make a list of words(in newline) to search for scraping images.(clear the contents and start adding words)
+
+Example:
+
+Flower
+Animal
+Cake
+...
