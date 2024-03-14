@@ -12,7 +12,6 @@ import selenium
 from selenium import webdriver
 import pandas as pd
 from tqdm import tqdm
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from lxml import etree
 
@@ -34,20 +33,15 @@ def scroll_down(driver):
 def imagescrape(item):
     try:
         # Script params
-        # service = webdriver.ChromeService()
         output_dir = './Pixabay'  # path to output
         # url to the images
         base_url = f'https://pixabay.com/images/search/{item}/'
-        # page_max = 10  # Max nb of page to scroll
-        # page_start = 1  # In case you want to resume
         # Create output directory if needed
         if not os.path.exists(output_dir):
             os.mkdir(output_dir)
         # Script start
         options = Options()
-        # options.add_argument("--headless=new")
-        driver = webdriver.Chrome(
-            executable_path=r'C:\Users\Pandu\Downloads\chromedriver-win64\chromedriver-win64\chromedriver.exe', options=options)
+        driver = webdriver.Chrome(options=options) # change path if necessary.
 
         links = []
         alts = []
@@ -63,7 +57,7 @@ def imagescrape(item):
             scraper = BeautifulSoup(data, 'lxml')
 
             if scraper.find_all(string=re.compile('^Try another search term$')):
-                print("\nNo Results 1")
+                print("\nNo Results")
                 driver.close()
                 return
 
@@ -102,13 +96,13 @@ def main() -> None:
     text_file = open("search_words.txt", "r")
     lines = text_file.readlines()
     text_file.close()
-    print('\n--------------- scrapping started ---------------')
+    print('\n--------------- Scraping started ---------------')
     for item in tqdm(lines, desc='SCRAPING'):
         item = item.strip()
         print('\n--------------- ' + item + ' started ---------------')
         imagescrape(item)
         print('\n--------------- ' + item + ' completed ---------------')
-    print('\n--------------- scrapping completed ---------------')
+    print('\n--------------- Scraping completed ---------------')
 
 
 if __name__ == '__main__':
